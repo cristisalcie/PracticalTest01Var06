@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PracticalTest01Var06</string>
+    <string name="star">*</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="hold">hold</string>
+    <string name="play">play</string>
 </resources>
