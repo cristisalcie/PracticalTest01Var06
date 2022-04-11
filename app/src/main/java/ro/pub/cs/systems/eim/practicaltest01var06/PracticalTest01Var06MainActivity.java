@@ -17,6 +17,7 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
     final private Random random = new Random();
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
     private int totalScore = 0;
+    private boolean serviceStarted = false;
 
     private class ButtonClickListener implements Button.OnClickListener {
 
@@ -57,7 +58,7 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                     } else {
                         checkedCheckBoxCount += 1;
                     }
-                    Log.d(Constants.TAG, "Number 1: " + tmpText1);
+//                    Log.d(Constants.TAG, "Number 1: " + tmpText1);
                 }
                 {
                     int randomNum = random.nextInt(4);
@@ -80,7 +81,7 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                     } else {
                         checkedCheckBoxCount += 1;
                     }
-                    Log.d(Constants.TAG, "Number 2: " + tmpText2);
+//                    Log.d(Constants.TAG, "Number 2: " + tmpText2);
                 }
                 {
                     int randomNum = random.nextInt(4);
@@ -102,7 +103,7 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                         thirdEditText.setText(tmpText3);
                         checkedCheckBoxCount += 1;
                     }
-                    Log.d(Constants.TAG, "Number 3: " + tmpText3);
+//                    Log.d(Constants.TAG, "Number 3: " + tmpText3);
                 }
 
                 boolean won = true;
@@ -134,6 +135,23 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                     intent.putExtra(Constants.NUMBER3_EDIT_TEXT_KEY, tmpText3);
                     intent.putExtra(Constants.CHECKBOX_COUNT_KEY, checkedCheckBoxCount);
                     startActivityForResult(intent, Constants.SECONDARY_ACTIVITY_REQUEST_CODE);
+
+//                    if (totalScore > 300) {
+                    if (totalScore >= 50) {
+                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        stopService(intent);
+                        intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        intent1.putExtra(Constants.TOTAL_SCORE_KEY, totalScore);
+                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 1);
+                        startService(intent);
+                        serviceStarted = true;
+                    }
+                    else if (totalScore > 0 && !serviceStarted) {
+                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 0);
+                        startService(intent);
+                        serviceStarted = true;
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Total score: " + totalScore, Toast.LENGTH_LONG).show();
                 }
@@ -149,6 +167,16 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
 
         Button playButton = (Button) findViewById(R.id.play_button);
         playButton.setOnClickListener(buttonClickListener);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent(this, PracticalTest01Var06Service.class);
+        stopService(intent);
+        serviceStarted = false;
+        super.onDestroy();
+        Log.d(Constants.TAG, "[mainActivity]onDestroy() method was invoked");
     }
 
     @Override
