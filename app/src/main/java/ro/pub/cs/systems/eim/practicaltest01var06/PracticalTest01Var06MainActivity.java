@@ -129,6 +129,24 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                 }
 
                 if (won) {
+//                    if (totalScore > 300) {
+                    if (totalScore >= 50) {
+                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        stopService(intent1);
+                        intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        intent1.putExtra(Constants.TOTAL_SCORE_KEY, totalScore);
+                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 1);
+                        startService(intent1);
+                        serviceStarted = true;
+                    }
+                    else if (totalScore > 0 && !serviceStarted) {
+                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
+                        intent1.putExtra(Constants.TOTAL_SCORE_KEY, totalScore);
+                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 0);
+                        startService(intent1);
+                        serviceStarted = true;
+                    }
+
                     Intent intent = new Intent(getApplicationContext(), PracticalTest01Var06SecondaryActivity.class);
                     intent.putExtra(Constants.NUMBER1_EDIT_TEXT_KEY, tmpText1);
                     intent.putExtra(Constants.NUMBER2_EDIT_TEXT_KEY, tmpText2);
@@ -136,22 +154,6 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                     intent.putExtra(Constants.CHECKBOX_COUNT_KEY, checkedCheckBoxCount);
                     startActivityForResult(intent, Constants.SECONDARY_ACTIVITY_REQUEST_CODE);
 
-//                    if (totalScore > 300) {
-                    if (totalScore >= 50) {
-                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
-                        stopService(intent);
-                        intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
-                        intent1.putExtra(Constants.TOTAL_SCORE_KEY, totalScore);
-                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 1);
-                        startService(intent);
-                        serviceStarted = true;
-                    }
-                    else if (totalScore > 0 && !serviceStarted) {
-                        Intent intent1 = new Intent(getApplicationContext(), PracticalTest01Var06Service.class);
-                        intent1.putExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 0);
-                        startService(intent);
-                        serviceStarted = true;
-                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Total score: " + totalScore, Toast.LENGTH_LONG).show();
                 }

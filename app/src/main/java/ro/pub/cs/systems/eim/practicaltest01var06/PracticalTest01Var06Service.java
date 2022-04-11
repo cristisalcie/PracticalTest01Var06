@@ -55,6 +55,7 @@ public class PracticalTest01Var06Service extends Service {
                     Log.d(Constants.TAG, "[service]Thread got interrupted (stopped)!");
                 }
                 int victory_code = intent.getIntExtra(Constants.SERVICE_VICOTRY_DATA_KEY, 0);
+                    Log.d(Constants.TAG, "[service] victorycode = " + victory_code);
                 if (victory_code == 1) {
                     int totalScore = intent.getIntExtra(Constants.TOTAL_SCORE_KEY, -1);
                     String data = String.format("[%s] %d",
