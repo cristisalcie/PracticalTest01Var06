@@ -105,13 +105,38 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
                     Log.d(Constants.TAG, "Number 3: " + tmpText3);
                 }
 
-                Intent intent = new Intent(getApplicationContext(), PracticalTest01Var06SecondaryActivity.class);
-                intent.putExtra(Constants.NUMBER1_EDIT_TEXT_KEY, tmpText1);
-                intent.putExtra(Constants.NUMBER2_EDIT_TEXT_KEY, tmpText2);
-                intent.putExtra(Constants.NUMBER3_EDIT_TEXT_KEY, tmpText3);
-                intent.putExtra(Constants.CHECKBOX_COUNT_KEY, checkedCheckBoxCount);
-                startActivityForResult(intent, Constants.SECONDARY_ACTIVITY_REQUEST_CODE);
+                boolean won = true;
+                if (!tmpText1.equals("*")) {
+                    if (!tmpText2.equals("*")) {
+                        if (!tmpText3.equals("*")) {
+                            if (!tmpText1.equals(tmpText2)) {
+                                won = false;
+                            }
+                            else if (!tmpText1.equals(tmpText3)) {
+                                won = false;
+                            }
+                            else if (!tmpText2.equals(tmpText3)) {
+                                won = false;
+                            }
+                        }
+                    }
+                    if (!tmpText3.equals("*")) {
+                        if (!tmpText1.equals(tmpText3)) {
+                            won = false;
+                        }
+                    }
+                }
 
+                if (won) {
+                    Intent intent = new Intent(getApplicationContext(), PracticalTest01Var06SecondaryActivity.class);
+                    intent.putExtra(Constants.NUMBER1_EDIT_TEXT_KEY, tmpText1);
+                    intent.putExtra(Constants.NUMBER2_EDIT_TEXT_KEY, tmpText2);
+                    intent.putExtra(Constants.NUMBER3_EDIT_TEXT_KEY, tmpText3);
+                    intent.putExtra(Constants.CHECKBOX_COUNT_KEY, checkedCheckBoxCount);
+                    startActivityForResult(intent, Constants.SECONDARY_ACTIVITY_REQUEST_CODE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Total score: " + totalScore, Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -126,14 +151,30 @@ public class PracticalTest01Var06MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(buttonClickListener);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(Constants.TOTAL_SCORE_KEY, totalScore);
+        Log.d(Constants.TAG, "[mainActivity]onSaveInstanceState() method was invoked");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.containsKey(Constants.TOTAL_SCORE_KEY)) {
+            totalScore = savedInstanceState.getInt(Constants.TOTAL_SCORE_KEY);
+        }
+        Log.d(Constants.TAG, "[mainActivity]onRestoreInstanceState() method was invoked");
+        Toast.makeText(this, "Total Score: " + totalScore, Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case Constants.SECONDARY_ACTIVITY_REQUEST_CODE:
-                Toast.makeText(this, "Activity returned with result " + resultCode, Toast.LENGTH_LONG).show();
                 totalScore += resultCode;
+                Toast.makeText(this, "Total Score: " + totalScore, Toast.LENGTH_LONG).show();
                 break;
         }
     }

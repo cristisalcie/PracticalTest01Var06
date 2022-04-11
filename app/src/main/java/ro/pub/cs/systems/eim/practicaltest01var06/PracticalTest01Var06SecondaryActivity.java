@@ -17,7 +17,6 @@ public class PracticalTest01Var06SecondaryActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.ok_button) {
-                
                 setResult(wonScore, new Intent());
                 finish();
             }

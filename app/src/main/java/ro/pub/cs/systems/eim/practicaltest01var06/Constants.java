@@ -7,4 +7,5 @@ public interface Constants {
     final public static String NUMBER2_EDIT_TEXT_KEY = "ro.pub.cs.systems.eim.testpractical01.number2EditTextKey";
     final public static String NUMBER3_EDIT_TEXT_KEY = "ro.pub.cs.systems.eim.testpractical01.number3EditTextKey";
     final public static String CHECKBOX_COUNT_KEY = "ro.pub.cs.systems.eim.testpractical01.checkboxCountKey";
+    final public static String TOTAL_SCORE_KEY = "ro.pub.cs.systems.eim.testpractical01.totalScoreKey";
 }
